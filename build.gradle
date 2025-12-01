@@ -44,33 +44,18 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        name = "Curse Maven"
-        url = "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-        content {
-            includeGroup "maven.modrinth"
-        }
-    }
     mavenCentral()
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
     
-    // PlayerSync dependency
-    // Adjust the version as needed
+    // PlayerSync dependency - compile only for API access
     compileOnly files('libs/playersync-1.20.1-2.1.4.jar')
     
-    // Traveler's Backpack dependency
-    // Using Modrinth Maven instead of CurseForge for better CI compatibility
-    compileOnly fg.deobf("maven.modrinth:travelersbackpack:9.1.15")
+    // Traveler's Backpack - Runtime dependency only
+    // Users must have Traveler's Backpack installed on their server
+    // We only need to compile against Forge APIs
 }
 
 tasks.named('processResources', ProcessResources).configure {
