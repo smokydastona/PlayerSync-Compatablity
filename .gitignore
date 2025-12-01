@@ -1,0 +1,39 @@
+# Gradle
+.gradle/
+build/
+out/
+classes/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Minecraft
+run/
+logs/
+crash-reports/
+
+# Build outputs
+*.jar
+!gradle-wrapper.jar
+!libs/*.jar
+
+# Other
+*.log
+*.bak
+*.tmp
+*.cache
