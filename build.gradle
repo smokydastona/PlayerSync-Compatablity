@@ -51,6 +51,13 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
     mavenCentral()
 }
 
@@ -62,9 +69,8 @@ dependencies {
     compileOnly files('libs/playersync-1.20.1-2.1.4.jar')
     
     // Traveler's Backpack dependency
-    // Using CurseForge Maven - update project ID as needed
-    // Format: curse.maven:<slug>-<projectId>:<fileId>
-    implementation fg.deobf("curse.maven:travelers-backpack-321117:5024814")
+    // Using Modrinth Maven instead of CurseForge for better CI compatibility
+    compileOnly fg.deobf("maven.modrinth:travelersbackpack:9.1.15")
 }
 
 tasks.named('processResources', ProcessResources).configure {
