@@ -1,6 +1,8 @@
 modLoader="javafml"
 loaderVersion="[47,)"
 license="GPL-3.0"
+# Server-side mod - optional on client
+issueTrackerURL="https://github.com/smokydastona/PlayerSync-Compatablity/issues"
 
 [[mods]]
 modId="playersync_travelersbackpack_compat"
@@ -9,6 +11,8 @@ displayName="PlayerSync Traveler's Backpack Compatibility"
 description='''
 Compatibility module that enables PlayerSync to synchronize Traveler's Backpack data across multiple servers.
 This includes backpack inventory, fluid tanks, crafting inventory, and all settings.
+
+This is a server-side mod and is optional on the client.
 '''
 authors="PlayerSync Compat Team"
 displayURL="https://github.com/mlus-asuka/PlayerSync"
@@ -18,7 +22,7 @@ displayURL="https://github.com/mlus-asuka/PlayerSync"
     mandatory=true
     versionRange="${forge_version_range}"
     ordering="NONE"
-    side="BOTH"
+    side="SERVER"
 
 [[dependencies.playersync_travelersbackpack_compat]]
     modId="minecraft"
@@ -32,11 +36,11 @@ displayURL="https://github.com/mlus-asuka/PlayerSync"
     mandatory=true
     versionRange="[2.0.0,)"
     ordering="AFTER"
-    side="BOTH"
+    side="SERVER"
 
 [[dependencies.playersync_travelersbackpack_compat]]
     modId="travelersbackpack"
     mandatory=true
     versionRange="[9.0.0,)"
     ordering="AFTER"
-    side="BOTH"
+    side="SERVER"
