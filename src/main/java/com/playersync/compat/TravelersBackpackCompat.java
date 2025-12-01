@@ -42,37 +42,44 @@ public class TravelersBackpackCompat {
      */
     public static CompoundTag saveBackpackData(@NotNull Player player) {
         try {
-            if (getBackpackCapabilityMethod == null) {
+            if (getBackpackCapabilityMethod == null || player == null) {
                 return null;
             }
             
             Object optional = getBackpackCapabilityMethod.invoke(null, player);
-            Method isPresentMethod = optional.getClass().getMethod("isPresent");
-            
-            if ((Boolean) isPresentMethod.invoke(optional)) {
-                CompoundTag tag = new CompoundTag();
-                Method getMethod = optional.getClass().getMethod("orElse", Object.class);
-                Object backpack = getMethod.invoke(optional, (Object) null);
-                
-                if (backpack != null) {
-                    // Save backpack NBT data using serializeNBT if available
-                    try {
-                        Method serializeMethod = backpack.getClass().getMethod("serializeNBT");
-                        Object nbtData = serializeMethod.invoke(backpack);
-                        if (nbtData instanceof CompoundTag) {
-                            return (CompoundTag) nbtData;
-                        }
-                    } catch (NoSuchMethodException e) {
-                        // Fallback: just return empty tag - mod will use its own sync
-                    }
-                }
-                return tag;
+            if (optional == null) {
+                return null;
             }
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+            
+            Method isPresentMethod = optional.getClass().getMethod("isPresent");
+            Object isPresentResult = isPresentMethod.invoke(optional);
+            
+            if (isPresentResult == null || !(isPresentResult instanceof Boolean) || !(Boolean)isPresentResult) {
+                return null;
+            }
+            
+            CompoundTag tag = new CompoundTag();
+            Method getMethod = optional.getClass().getMethod("orElse", Object.class);
+            Object backpack = getMethod.invoke(optional, (Object) null);
+            
+            if (backpack != null) {
+                // Save backpack NBT data using serializeNBT if available
+                try {
+                    Method serializeMethod = backpack.getClass().getMethod("serializeNBT");
+                    Object nbtData = serializeMethod.invoke(backpack);
+                    if (nbtData instanceof CompoundTag) {
+                        return (CompoundTag) nbtData;
+                    }
+                } catch (NoSuchMethodException e) {
+                    // Fallback: just return empty tag - mod will use its own sync
+                }
+            }
+            return tag;
+        } catch (Throwable t) {
+            // Catch everything to prevent crashes
+            PlayerSyncTravelersBackpackCompat.LOGGER.error("Critical error saving backpack data - operation failed gracefully", t);
+            return null;
         }
-        
-        return null;
     }
     
     /**
@@ -83,29 +90,37 @@ public class TravelersBackpackCompat {
      */
     public static void loadBackpackData(@NotNull Player player, @NotNull CompoundTag data) {
         try {
-            if (getBackpackCapabilityMethod == null) {
+            if (getBackpackCapabilityMethod == null || player == null || data == null || data.isEmpty()) {
                 return;
             }
             
             Object optional = getBackpackCapabilityMethod.invoke(null, player);
-            Method isPresentMethod = optional.getClass().getMethod("isPresent");
+            if (optional == null) {
+                return;
+            }
             
-            if ((Boolean) isPresentMethod.invoke(optional)) {
-                Method getMethod = optional.getClass().getMethod("orElse", Object.class);
-                Object backpack = getMethod.invoke(optional, (Object) null);
-                
-                if (backpack != null && data != null && !data.isEmpty()) {
-                    // Load backpack NBT data using deserializeNBT if available
-                    try {
-                        Method deserializeMethod = backpack.getClass().getMethod("deserializeNBT", Object.class);
-                        deserializeMethod.invoke(backpack, data);
-                    } catch (NoSuchMethodException e) {
-                        // Fallback: mod will handle its own sync
-                    }
+            Method isPresentMethod = optional.getClass().getMethod("isPresent");
+            Object isPresentResult = isPresentMethod.invoke(optional);
+            
+            if (isPresentResult == null || !(isPresentResult instanceof Boolean) || !(Boolean)isPresentResult) {
+                return;
+            }
+            
+            Method getMethod = optional.getClass().getMethod("orElse", Object.class);
+            Object backpack = getMethod.invoke(optional, (Object) null);
+            
+            if (backpack != null) {
+                // Load backpack NBT data using deserializeNBT if available
+                try {
+                    Method deserializeMethod = backpack.getClass().getMethod("deserializeNBT", Object.class);
+                    deserializeMethod.invoke(backpack, data);
+                } catch (NoSuchMethodException e) {
+                    // Fallback: mod will handle its own sync
                 }
             }
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+            // Catch everything to prevent crashes
+            PlayerSyncTravelersBackpackCompat.LOGGER.error("Critical error loading backpack data - operation failed gracefully", t);
         }
     }
     
@@ -116,19 +131,25 @@ public class TravelersBackpackCompat {
      */
     public static void markBackpackDirty(@NotNull Player player) {
         try {
-            if (getBackpackCapabilityMethod == null) {
+            if (getBackpackCapabilityMethod == null || player == null) {
                 return;
             }
             
             Object optional = getBackpackCapabilityMethod.invoke(null, player);
-            Method isPresentMethod = optional.getClass().getMethod("isPresent");
+            if (optional == null) {
+                return;
+            }
             
-            if ((Boolean) isPresentMethod.invoke(optional)) {
+            Method isPresentMethod = optional.getClass().getMethod("isPresent");
+            Object isPresentResult = isPresentMethod.invoke(optional);
+            
+            if (isPresentResult != null && isPresentResult instanceof Boolean && (Boolean)isPresentResult) {
                 // Backpack capability exists, sync should happen automatically
                 // No action needed - Traveler's Backpack handles its own sync
             }
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+            // Catch everything to prevent crashes
+            PlayerSyncTravelersBackpackCompat.LOGGER.error("Critical error marking backpack dirty - operation failed gracefully", t);
         }
     }
 }
