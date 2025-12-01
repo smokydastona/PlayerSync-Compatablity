@@ -42,6 +42,18 @@ public class BackpackSyncHandler {
                         PlayerSyncTravelersBackpackCompat.LOGGER.debug("Saved Traveler's Backpack data for player: {}", player.getName().getString());
                     }
                 }
+                
+                // Also save MCA data if mod is loaded
+                if (MCACompat.isLoaded()) {
+                    CompoundTag mcaData = MCACompat.saveMCAData(player);
+                    if (mcaData != null && !mcaData.isEmpty()) {
+                        CompoundTag persistentData = player.getPersistentData();
+                        if (persistentData != null) {
+                            persistentData.put(MCACompat.CAPABILITY_KEY, mcaData);
+                            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Saved MCA data for player: {}", player.getName().getString());
+                        }
+                    }
+                }
             } catch (Exception e) {
                 PlayerSyncTravelersBackpackCompat.LOGGER.error("Error saving Traveler's Backpack data for player: {}", player.getName().getString(), e);
             }
@@ -84,6 +96,15 @@ public class BackpackSyncHandler {
                         TravelersBackpackCompat.markBackpackDirty(player);
                         
                         PlayerSyncTravelersBackpackCompat.LOGGER.debug("Loaded Traveler's Backpack data for player: {}", player.getName().getString());
+                    }
+                }
+                
+                // Also load MCA data if mod is loaded
+                if (MCACompat.isLoaded() && persistentData.contains(MCACompat.CAPABILITY_KEY)) {
+                    CompoundTag mcaData = persistentData.getCompound(MCACompat.CAPABILITY_KEY);
+                    if (mcaData != null && !mcaData.isEmpty()) {
+                        MCACompat.loadMCAData(player, mcaData);
+                        PlayerSyncTravelersBackpackCompat.LOGGER.debug("Loaded MCA data for player: {}", player.getName().getString());
                     }
                 }
             } catch (Exception e) {
@@ -133,6 +154,18 @@ public class BackpackSyncHandler {
                         newPersistentData.put(TravelersBackpackCompat.CAPABILITY_KEY, backpackData.copy());
                         
                         PlayerSyncTravelersBackpackCompat.LOGGER.debug("Cloned Traveler's Backpack data for player: {}", newPlayer.getName().getString());
+                    }
+                }
+                
+                // Also clone MCA data if mod is loaded
+                if (MCACompat.isLoaded() && oldPersistentData.contains(MCACompat.CAPABILITY_KEY)) {
+                    CompoundTag mcaData = oldPersistentData.getCompound(MCACompat.CAPABILITY_KEY);
+                    if (mcaData != null) {
+                        CompoundTag newPersistentData = newPlayer.getPersistentData();
+                        if (newPersistentData != null) {
+                            newPersistentData.put(MCACompat.CAPABILITY_KEY, mcaData.copy());
+                            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Cloned MCA data for player: {}", newPlayer.getName().getString());
+                        }
                     }
                 }
             } catch (Exception e) {
