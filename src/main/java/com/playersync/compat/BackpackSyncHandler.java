@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -414,6 +415,45 @@ public class BackpackSyncHandler {
                 PlayerSyncTravelersBackpackCompat.LOGGER.debug("Dead player {} logged out, cleaning up", playerId);
                 deadPlayersDuringLogin.remove(playerId);
             }
+        }
+    }
+    
+    /**
+     * Save player data before teleportation (Waystone compatibility)
+     * This ensures data is saved even when players don't actually log out
+     * Useful for mods like WaystoneButtonInjector that teleport players instantly
+     */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onPlayerTeleport(EntityTeleportEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        
+        try {
+            // Save data before teleport to prevent data loss
+            performAutoSave(player);
+            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Saved player data before teleport: {}", player.getName().getString());
+        } catch (Exception e) {
+            PlayerSyncTravelersBackpackCompat.LOGGER.error("Error saving data before teleport for player: {}", player.getName().getString(), e);
+        }
+    }
+    
+    /**
+     * Save player data when changing dimensions
+     * Ensures data persistence during dimension travel
+     */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        
+        try {
+            // Save data during dimension change
+            performAutoSave(player);
+            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Saved player data during dimension change: {}", player.getName().getString());
+        } catch (Exception e) {
+            PlayerSyncTravelersBackpackCompat.LOGGER.error("Error saving data during dimension change for player: {}", player.getName().getString(), e);
         }
     }
     
