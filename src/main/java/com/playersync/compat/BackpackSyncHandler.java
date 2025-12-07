@@ -421,7 +421,8 @@ public class BackpackSyncHandler {
     /**
      * Save player data before teleportation (Waystone compatibility)
      * This ensures data is saved even when players don't actually log out
-     * Useful for mods like WaystoneButtonInjector that teleport players instantly
+     * CRITICAL for WaystoneButtonInjector cross-server teleportation!
+     * Saves and forces disk flush to ensure data persists before server transfer
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerTeleport(EntityTeleportEvent event) {
@@ -432,7 +433,12 @@ public class BackpackSyncHandler {
         try {
             // Save data before teleport to prevent data loss
             performAutoSave(player);
-            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Saved player data before teleport: {}", player.getName().getString());
+            
+            // Force save to disk - critical for cross-server teleports!
+            // WaystoneButtonInjector may redirect to different server immediately
+            player.save(player.getPersistentData());
+            
+            PlayerSyncTravelersBackpackCompat.LOGGER.info("Saved and flushed player data before teleport (cross-server safe): {}", player.getName().getString());
         } catch (Exception e) {
             PlayerSyncTravelersBackpackCompat.LOGGER.error("Error saving data before teleport for player: {}", player.getName().getString(), e);
         }
@@ -451,6 +457,10 @@ public class BackpackSyncHandler {
         try {
             // Save data during dimension change
             performAutoSave(player);
+            
+            // Force disk flush for dimension changes too
+            player.save(player.getPersistentData());
+            
             PlayerSyncTravelersBackpackCompat.LOGGER.debug("Saved player data during dimension change: {}", player.getName().getString());
         } catch (Exception e) {
             PlayerSyncTravelersBackpackCompat.LOGGER.error("Error saving data during dimension change for player: {}", player.getName().getString(), e);
