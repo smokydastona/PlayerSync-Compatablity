@@ -338,7 +338,9 @@ public class BackpackSyncHandler {
                     if (player.getTags().contains("player_synced") && !player.isDeadOrDying()) {
                         try {
                             // Trigger save event manually for auto-save
-                            PlayerEvent.SaveToFile saveEvent = new PlayerEvent.SaveToFile(player, player.getServer().getPlayerList().getPlayerDirectory(player), player.getUUID().toString());
+                            // Use server's world data folder for player data
+                            java.io.File playerDataFolder = server.getPlayerList().getPlayerDataFolder();
+                            PlayerEvent.SaveToFile saveEvent = new PlayerEvent.SaveToFile(player, playerDataFolder, player.getUUID().toString());
                             onPlayerDataSave(saveEvent);
                         } catch (Exception e) {
                             PlayerSyncTravelersBackpackCompat.LOGGER.error("Error during auto-save for player: {}", player.getName().getString(), e);
