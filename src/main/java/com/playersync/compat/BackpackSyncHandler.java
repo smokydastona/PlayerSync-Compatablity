@@ -337,17 +337,69 @@ public class BackpackSyncHandler {
                     // Only auto-save if player has been synced and isn't dead
                     if (player.getTags().contains("player_synced") && !player.isDeadOrDying()) {
                         try {
-                            // Trigger save event manually for auto-save
-                            // Use playerIo to get player data folder
-                            java.io.File playerDataFolder = server.getPlayerList().playerIo.getPlayerDataFolder();
-                            PlayerEvent.SaveToFile saveEvent = new PlayerEvent.SaveToFile(player, playerDataFolder, player.getUUID().toString());
-                            onPlayerDataSave(saveEvent);
+                            // Directly save mod data without triggering event
+                            // This avoids needing to access private playerIo field
+                            performAutoSave(player);
                         } catch (Exception e) {
                             PlayerSyncTravelersBackpackCompat.LOGGER.error("Error during auto-save for player: {}", player.getName().getString(), e);
                         }
                     }
                 }
             }
+        }
+    }
+    
+    /**
+     * Perform auto-save for a player
+     * Saves all mod data directly to player's persistent data
+     */
+    private static void performAutoSave(ServerPlayer player) {
+        if (!TravelersBackpackCompat.isLoaded() && !MCACompat.isLoaded() && !PMmoCompat.isLoaded()) {
+            return; // Nothing to save
+        }
+        
+        try {
+            // Create batch container for all mod data
+            CompoundTag batch = SyncOptimizations.createBatch();
+            boolean hasData = false;
+            
+            // Collect Traveler's Backpack data
+            if (TravelersBackpackCompat.isLoaded()) {
+                CompoundTag backpackData = TravelersBackpackCompat.saveBackpackData(player);
+                if (backpackData != null && !backpackData.isEmpty()) {
+                    SyncOptimizations.addToBatch(batch, "travelersbackpack", backpackData, true);
+                    hasData = true;
+                }
+            }
+            
+            // Collect MCA data
+            if (MCACompat.isLoaded()) {
+                CompoundTag mcaData = MCACompat.saveMCAData(player);
+                if (mcaData != null && !mcaData.isEmpty()) {
+                    SyncOptimizations.addToBatch(batch, "mca", mcaData, true);
+                    hasData = true;
+                }
+            }
+            
+            // Collect PMMO data
+            if (PMmoCompat.isLoaded()) {
+                CompoundTag pmmoData = PMmoCompat.savePMmoData(player);
+                if (pmmoData != null && !pmmoData.isEmpty()) {
+                    SyncOptimizations.addToBatch(batch, "pmmo", pmmoData, true);
+                    hasData = true;
+                }
+            }
+            
+            // Save batch if we have data
+            if (hasData) {
+                CompoundTag persistentData = player.getPersistentData();
+                if (persistentData != null) {
+                    persistentData.put("PlayerSyncCompat_Batch", batch);
+                    PlayerSyncTravelersBackpackCompat.LOGGER.debug("Auto-saved mod data for player: {}", player.getName().getString());
+                }
+            }
+        } catch (Exception e) {
+            PlayerSyncTravelersBackpackCompat.LOGGER.error("Error in performAutoSave for player: {}", player.getName().getString(), e);
         }
     }
     
