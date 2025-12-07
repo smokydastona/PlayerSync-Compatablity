@@ -30,6 +30,20 @@ Synchronizes [MCA Reborn](https://www.curseforge.com/minecraft/mc-mods/minecraft
 - ✅ **Village Data** - Home village UUID and tax status
 - ✅ **All MCA Capabilities** - Complete capability data via reflection
 
+### Project MMO (PMMO)
+Synchronizes [Project MMO](https://www.curseforge.com/minecraft/mc-mods/project-mmo) progression data:
+
+- ✅ **All Skills & Levels** - Complete skill progression across all skills
+- ✅ **Experience Points** - XP data for every skill
+- ✅ **Perks** - All unlocked perks and abilities
+- ✅ **Active Abilities** - Currently equipped and unlocked abilities
+- ✅ **Vein Miner Settings** - Vein miner configuration and data
+- ✅ **Player Preferences** - PMMO-specific player settings
+- ✅ **Statistics** - All tracked player statistics
+- ✅ **Active Bonuses** - Current bonus effects
+- ✅ **Requirements** - Progression requirement tracking
+- ✅ **Full Capability Sync** - Complete PMMO capability data via reflection
+
 ## Requirements
 
 - Minecraft 1.20.1
@@ -37,6 +51,7 @@ Synchronizes [MCA Reborn](https://www.curseforge.com/minecraft/mc-mods/minecraft
 - PlayerSync 2.0.0 or higher
 - **Optional:** Traveler's Backpack 9.0.0 or higher (for backpack sync)
 - **Optional:** MCA Reborn 7.5.0 or higher (for MCA sync)
+- **Optional:** Project MMO 1.7.0 or higher (for PMMO sync)
 
 > **Note:** This mod works with any combination of the supported mods. You don't need all of them installed.
 
@@ -95,6 +110,13 @@ This compatibility module works by:
 - **Both Fabric and Forge**: This compatibility mod is for Forge only, but MCA data format is compatible
 - **Auto-Detection**: Scans for 30+ different MCA data keys to ensure nothing is missed
 
+### Project MMO
+- **Skill Progression**: All skills, levels, and XP transfer between servers
+- **Perks & Abilities**: Unlocked perks and active abilities persist
+- **Vein Miner**: Your vein miner configuration follows you
+- **Statistics**: All tracked stats are maintained
+- **Complete Sync**: Scans for 35+ PMMO data keys including skills, bonuses, preferences, and requirements
+
 ## Configuration
 
 This mod works out of the box with no configuration needed. It automatically detects when PlayerSync and any supported mods are present.
@@ -134,6 +156,7 @@ PlayerSync-Chaos-Compatablity/
 │   ├── PlayerSyncTravelersBackpackCompat.java   # Main mod class
 │   ├── TravelersBackpackCompat.java             # Traveler's Backpack handler
 │   ├── MCACompat.java                           # MCA Reborn handler
+│   ├── PMmoCompat.java                          # Project MMO handler
 │   └── BackpackSyncHandler.java                 # Event handlers
 ├── src/main/resources/
 │   ├── META-INF/mods.toml                       # Mod metadata
@@ -147,7 +170,7 @@ PlayerSync-Chaos-Compatablity/
 
 To add support for additional mods:
 
-1. Create a new compat class (e.g., `YourModCompat.java`) following the pattern in `TravelersBackpackCompat.java` or `MCACompat.java`
+1. Create a new compat class (e.g., `YourModCompat.java`) following the pattern in `TravelersBackpackCompat.java`, `MCACompat.java`, or `PMmoCompat.java`
 2. Implement `isLoaded()`, `saveData()`, and `loadData()` methods
 3. Add integration calls in `BackpackSyncHandler.java`
 4. Use comprehensive error handling (Throwable catches) to prevent crashes
@@ -158,6 +181,7 @@ To add support for additional mods:
 - **PlayerSync** - [mlus-asuka](https://github.com/mlus-asuka)
 - **Traveler's Backpack** - [Tiviacz1337](https://github.com/Tiviacz1337)
 - **MCA Reborn** - [Luke100000](https://github.com/Luke100000/minecraft-comes-alive)
+- **Project MMO** - [Caltinor](https://www.curseforge.com/minecraft/mc-mods/project-mmo)
 
 ## License
 
@@ -189,5 +213,12 @@ If you encounter issues:
   - Destiny, quests, and interactions
   - Baby/pregnancy state and gift history
   - 30+ data keys automatically detected and synced
+- Project MMO: Complete skill progression sync including:
+  - All skills, levels, and XP
+  - Perks and abilities
+  - Vein miner settings
+  - Statistics and bonuses
+  - Player preferences and requirements
+  - 35+ data keys automatically detected and synced
 - Crash-resistant error handling for maximum stability
 - Reflection-based compatibility - no compile-time dependencies

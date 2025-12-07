@@ -54,6 +54,18 @@ public class BackpackSyncHandler {
                         }
                     }
                 }
+                
+                // Also save PMMO data if mod is loaded
+                if (PMmoCompat.isLoaded()) {
+                    CompoundTag pmmoData = PMmoCompat.savePMmoData(player);
+                    if (pmmoData != null && !pmmoData.isEmpty()) {
+                        CompoundTag persistentData = player.getPersistentData();
+                        if (persistentData != null) {
+                            persistentData.put(PMmoCompat.CAPABILITY_KEY, pmmoData);
+                            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Saved PMMO data for player: {}", player.getName().getString());
+                        }
+                    }
+                }
             } catch (Exception e) {
                 PlayerSyncTravelersBackpackCompat.LOGGER.error("Error saving Traveler's Backpack data for player: {}", player.getName().getString(), e);
             }
@@ -105,6 +117,15 @@ public class BackpackSyncHandler {
                     if (mcaData != null && !mcaData.isEmpty()) {
                         MCACompat.loadMCAData(player, mcaData);
                         PlayerSyncTravelersBackpackCompat.LOGGER.debug("Loaded MCA data for player: {}", player.getName().getString());
+                    }
+                }
+                
+                // Also load PMMO data if mod is loaded
+                if (PMmoCompat.isLoaded() && persistentData.contains(PMmoCompat.CAPABILITY_KEY)) {
+                    CompoundTag pmmoData = persistentData.getCompound(PMmoCompat.CAPABILITY_KEY);
+                    if (pmmoData != null && !pmmoData.isEmpty()) {
+                        PMmoCompat.loadPMmoData(player, pmmoData);
+                        PlayerSyncTravelersBackpackCompat.LOGGER.debug("Loaded PMMO data for player: {}", player.getName().getString());
                     }
                 }
             } catch (Exception e) {
@@ -165,6 +186,18 @@ public class BackpackSyncHandler {
                         if (newPersistentData != null) {
                             newPersistentData.put(MCACompat.CAPABILITY_KEY, mcaData.copy());
                             PlayerSyncTravelersBackpackCompat.LOGGER.debug("Cloned MCA data for player: {}", newPlayer.getName().getString());
+                        }
+                    }
+                }
+                
+                // Also clone PMMO data if mod is loaded
+                if (PMmoCompat.isLoaded() && oldPersistentData.contains(PMmoCompat.CAPABILITY_KEY)) {
+                    CompoundTag pmmoData = oldPersistentData.getCompound(PMmoCompat.CAPABILITY_KEY);
+                    if (pmmoData != null) {
+                        CompoundTag newPersistentData = newPlayer.getPersistentData();
+                        if (newPersistentData != null) {
+                            newPersistentData.put(PMmoCompat.CAPABILITY_KEY, pmmoData.copy());
+                            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Cloned PMMO data for player: {}", newPlayer.getName().getString());
                         }
                     }
                 }
