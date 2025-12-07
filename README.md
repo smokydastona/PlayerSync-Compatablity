@@ -17,11 +17,18 @@ Synchronizes [Traveler's Backpack](https://github.com/Tiviacz1337/Travelers-Back
 ### Minecraft Comes Alive (MCA) Reborn
 Synchronizes [MCA Reborn](https://www.curseforge.com/minecraft/mc-mods/minecraft-comes-alive-reborn) player data:
 
-- ✅ **Marriage Status** - Spouse and relationship data
-- ✅ **Family Data** - Children and family members
-- ✅ **Village Reputation** - Standing with villagers
-- ✅ **Personal Relationships** - Hearts and interactions with NPCs
-- ✅ **Player Traits** - MCA-specific player attributes
+- ✅ **Marriage & Spouse** - Complete marriage status and partner data
+- ✅ **Family & Children** - All children and family member relationships
+- ✅ **Village Rank & Reputation** - Standing, rank progression, and monarch status
+- ✅ **Relationships & Hearts** - All NPC relationships and heart levels
+- ✅ **Player Traits & Mood** - Personality characteristics and emotional states
+- ✅ **Baby/Pregnancy State** - Expecting status and baby growth progress
+- ✅ **Destiny & Quests** - Destiny progress and quest completion
+- ✅ **Gift History** - Gift interactions and cooldowns
+- ✅ **Genetics** - Player genetic data for offspring
+- ✅ **Interaction History** - Daily interaction tracking with NPCs
+- ✅ **Village Data** - Home village UUID and tax status
+- ✅ **All MCA Capabilities** - Complete capability data via reflection
 
 ## Requirements
 
@@ -84,7 +91,9 @@ This compatibility module works by:
 - **Marriage Data**: Spouse relationships sync across servers
 - **Family Members**: Children and family data persist when switching servers
 - **Village Data**: Your standing with villages is maintained
+- **Comprehensive Sync**: All player traits, moods, genetics, quests, and destiny progress
 - **Both Fabric and Forge**: This compatibility mod is for Forge only, but MCA data format is compatible
+- **Auto-Detection**: Scans for 30+ different MCA data keys to ensure nothing is missed
 
 ## Configuration
 
@@ -173,5 +182,12 @@ If you encounter issues:
 - Initial release
 - Support for Minecraft 1.20.1
 - Traveler's Backpack: Full inventory, fluids, settings, and abilities sync
-- MCA Reborn: Marriage, family, reputation, and relationship sync
+- MCA Reborn: Comprehensive sync of all player data including:
+  - Marriage, family, and relationships
+  - Village rank, reputation, and monarch status
+  - Traits, mood, and genetics
+  - Destiny, quests, and interactions
+  - Baby/pregnancy state and gift history
+  - 30+ data keys automatically detected and synced
 - Crash-resistant error handling for maximum stability
+- Reflection-based compatibility - no compile-time dependencies
