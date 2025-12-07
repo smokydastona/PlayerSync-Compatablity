@@ -3,6 +3,7 @@ package com.playersync.compat;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
@@ -57,11 +58,17 @@ public class MCACompat {
     private static Class<?> playerDataClass;
     private static Class<?> playerSaveDataClass;
     private static Method getPlayerDataMethod;
+    private static Boolean loaded = null; // Lazy loading cache
     
     /**
      * Checks if MCA Reborn mod is loaded and initializes reflection
+     * Uses lazy loading - only performs expensive reflection check once
      */
     public static boolean isLoaded() {
+        if (loaded != null) {
+            return loaded; // Return cached result
+        }
+        
         try {
             // Try multiple possible class locations for MCA
             try {
@@ -79,6 +86,7 @@ public class MCACompat {
                             try {
                                 playerDataClass = Class.forName("mca.core.MCA");
                             } catch (ClassNotFoundException e5) {
+                                loaded = false;
                                 return false;
                             }
                         }
@@ -86,8 +94,11 @@ public class MCACompat {
                 }
             }
             
+            loaded = true;
+            PlayerSyncTravelersBackpackCompat.LOGGER.info("MCA Reborn detected and integrated");
             return true;
         } catch (Throwable t) {
+            loaded = false;
             return false;
         }
     }

@@ -3,6 +3,7 @@ package com.playersync.compat;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
@@ -19,17 +20,26 @@ public class TravelersBackpackCompat {
     private static Class<?> capabilityUtilsClass;
     private static Class<?> backpackContainerClass;
     private static Method getBackpackCapabilityMethod;
+    private static Boolean loaded = null; // Lazy loading cache
     
     /**
      * Checks if Traveler's Backpack mod is loaded and initializes reflection
+     * Uses lazy loading - only performs expensive reflection check once
      */
     public static boolean isLoaded() {
+        if (loaded != null) {
+            return loaded; // Return cached result
+        }
+        
         try {
             capabilityUtilsClass = Class.forName("com.tiviacz.travelersbackpack.capability.CapabilityUtils");
             backpackContainerClass = Class.forName("com.tiviacz.travelersbackpack.inventory.ITravelersBackpackContainer");
             getBackpackCapabilityMethod = capabilityUtilsClass.getMethod("getBackpackCapability", Player.class);
+            loaded = true;
+            PlayerSyncTravelersBackpackCompat.LOGGER.info("Traveler's Backpack detected and integrated");
             return true;
         } catch (ClassNotFoundException | NoSuchMethodException e) {
+            loaded = false;
             return false;
         }
     }
