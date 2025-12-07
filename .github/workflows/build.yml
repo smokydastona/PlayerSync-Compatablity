@@ -45,7 +45,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: playersync-travelersbackpack-compat-${{ steps.version.outputs.VERSION }}
+        name: playersync-performance-plus-${{ steps.version.outputs.VERSION }}
         path: build/libs/*.jar
         
     - name: Create Release
