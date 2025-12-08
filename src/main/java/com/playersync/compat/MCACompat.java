@@ -61,46 +61,17 @@ public class MCACompat {
     private static Boolean loaded = null; // Lazy loading cache
     
     /**
-     * Checks if MCA Reborn mod is loaded and initializes reflection
-     * Uses lazy loading - only performs expensive reflection check once
+     * MCA integration DISABLED - MCA stores villager family trees globally, not per-player
+     * Syncing this data causes corruption of family trees across the server
+     * 
+     * @return Always returns false to disable MCA sync
      */
     public static boolean isLoaded() {
-        if (loaded != null) {
-            return loaded; // Return cached result
-        }
-        
-        try {
-            // Try multiple possible class locations for MCA
-            try {
-                playerDataClass = Class.forName("net.mca.entity.VillagerLike");
-            } catch (ClassNotFoundException e1) {
-                try {
-                    playerDataClass = Class.forName("net.mca.data.PlayerData");
-                } catch (ClassNotFoundException e2) {
-                    try {
-                        playerDataClass = Class.forName("net.mca.server.world.data.PlayerSaveData");
-                    } catch (ClassNotFoundException e3) {
-                        try {
-                            playerDataClass = Class.forName("net.mca.PlayerData");
-                        } catch (ClassNotFoundException e4) {
-                            try {
-                                playerDataClass = Class.forName("mca.core.MCA");
-                            } catch (ClassNotFoundException e5) {
-                                loaded = false;
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            loaded = true;
-            PlayerSyncTravelersBackpackCompat.LOGGER.info("MCA Reborn detected and integrated");
-            return true;
-        } catch (Throwable t) {
-            loaded = false;
-            return false;
-        }
+        // ALWAYS RETURN FALSE - DO NOT SYNC MCA DATA
+        // MCA family trees are server-wide data, not player-specific
+        // Attempting to sync this corrupts villager relationships
+        loaded = false;
+        return false;
     }
     
     /**

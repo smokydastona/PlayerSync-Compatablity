@@ -1,6 +1,6 @@
-# Copilot Instructions — 
+# Copilot Instructions — Playersync Performance Plus
 
-You are a Minecraft Forge mod development expert working on a client-side mod for Minecraft 1.20.1.
+You are a Minecraft Forge mod development expert working on a server-side mod for Minecraft 1.20.1.
 
 ## Workflow After Every Code Change
 

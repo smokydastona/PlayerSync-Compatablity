@@ -20,7 +20,7 @@ PERFORMANCE FEATURES:
 
 OPTIONAL MOD SUPPORT:
 ✓ Traveler's Backpack - Comprehensive backpack sync
-✓ MCA Reborn - Complete family, marriage, village data
+✗ MCA Reborn - REMOVED (corrupts family trees - MCA data is server-wide, not player-specific)
 ✓ Project MMO - Full skill progression sync
 
 Works with or without the optional mods. Just install alongside PlayerSync for instant performance boost!
@@ -59,12 +59,15 @@ displayURL="https://github.com/smokydastona/PlayerSync-Compatablity"
     ordering="AFTER"
     side="SERVER"
 
-[[dependencies.playersync_performance_plus]]
-    modId="mca"
-    mandatory=false
-    versionRange="[7.5.0,)"
-    ordering="AFTER"
-    side="SERVER"
+# MCA INTEGRATION DISABLED - DO NOT RE-ENABLE
+# MCA stores villager family trees as server-wide data, NOT player-specific data
+# Syncing this data corrupts family relationships across the entire server
+# [[dependencies.playersync_performance_plus]]
+#     modId="mca"
+#     mandatory=false
+#     versionRange="[7.5.0,)"
+#     ordering="AFTER"
+#     side="SERVER"
 
 [[dependencies.playersync_performance_plus]]
     modId="pmmo"
