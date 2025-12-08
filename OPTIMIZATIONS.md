@@ -34,7 +34,6 @@ public static boolean isLoaded() {
 
 **Location:** 
 - `TravelersBackpackCompat.java`
-- `MCACompat.java`
 - `PMmoCompat.java`
 
 **Impact:**
@@ -53,7 +52,6 @@ CompoundTag batch = SyncOptimizations.createBatch();
 
 // Add all mod data to batch
 SyncOptimizations.addToBatch(batch, "travelersbackpack", backpackData, true);
-SyncOptimizations.addToBatch(batch, "mca", mcaData, true);
 SyncOptimizations.addToBatch(batch, "pmmo", pmmoData, true);
 
 // Single write operation
@@ -111,7 +109,6 @@ public static CompoundTag compressData(CompoundTag tag) {
 
 **Compression Ratios (Typical):**
 - Traveler's Backpack: ~55% (mostly item NBT)
-- MCA Reborn: ~65% (text-heavy data)
 - Project MMO: ~70% (numerical data with repetition)
 
 ## 4. Backward Compatibility ✅
@@ -270,7 +267,7 @@ public static void saveWithPriority(String key, CompoundTag data, SyncPriority p
 
 **Expected Impact:**
 - Faster sync of critical data (player backpack contents)
-- Less critical data (MCA gift history) can be delayed
+- Non-critical data can be delayed
 - Better perceived performance during lag spikes
 
 **Priority:** Low (all current data is important enough to sync immediately)

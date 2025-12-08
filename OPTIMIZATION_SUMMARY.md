@@ -15,7 +15,7 @@ This mod has been transformed from a **specific mod compatibility addon** into a
 - ✅ Works with **OR WITHOUT** any optional mods
 - ✅ Performance optimizations apply to **ALL PlayerSync data**
 - ✅ Universal drop-in enhancement
-- ✅ Optional mod support (TB, MCA, PMMO) as bonus features
+- ✅ Optional mod support (TB, PMMO) as bonus features
 
 ## Universal Benefits
 
@@ -23,7 +23,7 @@ Everyone who installs this mod gets:
 
 ### 1. ✅ Lazy Loading - FULLY IMPLEMENTED
 **Status:** Already existed in codebase, confirmed working
-- Location: All three compatibility classes (TravelersBackpackCompat, MCACompat, PMmoCompat)
+- Location: Compatibility classes (TravelersBackpackCompat, PMmoCompat)
 - Caches mod detection with `Boolean loaded = null`
 - Reflection only runs once per mod
 - **Impact:** < 1 nanosecond for cached checks vs ~10ms for reflection

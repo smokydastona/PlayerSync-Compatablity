@@ -68,22 +68,6 @@ Synchronizes [Traveler's Backpack](https://github.com/Tiviacz1337/Travelers-Back
 - ✅ **Sleeping Bag State** - Whether the sleeping bag is deployed
 - ✅ **Abilities** - Special backpack abilities and upgrades
 
-### Minecraft Comes Alive (MCA) Reborn
-Synchronizes [MCA Reborn](https://www.curseforge.com/minecraft/mc-mods/minecraft-comes-alive-reborn) player data:
-
-- ✅ **Marriage & Spouse** - Complete marriage status and partner data
-- ✅ **Family & Children** - All children and family member relationships
-- ✅ **Village Rank & Reputation** - Standing, rank progression, and monarch status
-- ✅ **Relationships & Hearts** - All NPC relationships and heart levels
-- ✅ **Player Traits & Mood** - Personality characteristics and emotional states
-- ✅ **Baby/Pregnancy State** - Expecting status and baby growth progress
-- ✅ **Destiny & Quests** - Destiny progress and quest completion
-- ✅ **Gift History** - Gift interactions and cooldowns
-- ✅ **Genetics** - Player genetic data for offspring
-- ✅ **Interaction History** - Daily interaction tracking with NPCs
-- ✅ **Village Data** - Home village UUID and tax status
-- ✅ **All MCA Capabilities** - Complete capability data via reflection
-
 ### Project MMO (PMMO)
 Synchronizes [Project MMO](https://www.curseforge.com/minecraft/mc-mods/project-mmo) progression data:
 
@@ -104,7 +88,6 @@ Synchronizes [Project MMO](https://www.curseforge.com/minecraft/mc-mods/project-
 - Forge 47.2.0 or higher
 - **PlayerSync 2.0.0 or higher** (Required)
 - **Optional:** Traveler's Backpack 9.0.0+ (adds backpack sync)
-- **Optional:** MCA Reborn 7.5.0+ (adds family/marriage sync)
 - **Optional:** Project MMO 1.7.0+ (adds skill progression sync)
 
 > **Important:** Performance optimizations work even if you have NONE of the optional mods installed!
@@ -125,7 +108,6 @@ The mod auto-detects what mods you have and enables compatibility automatically.
 
 Want enhanced mod support? Install any combination:
 - Add **Traveler's Backpack** = backpack sync enabled
-- Add **MCA Reborn** = family/marriage sync enabled  
 - Add **Project MMO** = skill progression sync enabled
 
 **OR** install none and still get all the performance benefits!
@@ -134,7 +116,7 @@ Want enhanced mod support? Install any combination:
 
 1. Download the latest release of this mod
 2. Place it in your server's `mods` folder alongside PlayerSync
-3. Add any supported mods you want synchronized (Traveler's Backpack, MCA Reborn, etc.)
+3. Add any supported mods you want synchronized (Traveler's Backpack, Project MMO, etc.)
 4. Restart the server
 5. The mod will automatically detect and integrate with installed mods
 
@@ -174,14 +156,6 @@ This compatibility module works by:
 - **Curios API**: If Traveler's Backpack is equipped via Curios, the data will still sync properly
 - **Multiple Backpacks**: Only the currently equipped backpack is synchronized
 - **Backpack Items**: Placed backpack blocks are NOT synchronized - only equipped backpacks
-
-### MCA Reborn
-- **Marriage Data**: Spouse relationships sync across servers
-- **Family Members**: Children and family data persist when switching servers
-- **Village Data**: Your standing with villages is maintained
-- **Comprehensive Sync**: All player traits, moods, genetics, quests, and destiny progress
-- **Both Fabric and Forge**: This compatibility mod is for Forge only, but MCA data format is compatible
-- **Auto-Detection**: Scans for 30+ different MCA data keys to ensure nothing is missed
 
 ### Project MMO
 - **Skill Progression**: All skills, levels, and XP transfer between servers
@@ -288,7 +262,6 @@ PlayerSync-Chaos-Compatablity/
 ├── src/main/java/com/playersync/compat/
 │   ├── PlayerSyncTravelersBackpackCompat.java   # Main mod class
 │   ├── TravelersBackpackCompat.java             # Traveler's Backpack handler
-│   ├── MCACompat.java                           # MCA Reborn handler
 │   ├── PMmoCompat.java                          # Project MMO handler
 │   └── BackpackSyncHandler.java                 # Event handlers
 ├── src/main/resources/
@@ -303,7 +276,7 @@ PlayerSync-Chaos-Compatablity/
 
 To add support for additional mods:
 
-1. Create a new compat class (e.g., `YourModCompat.java`) following the pattern in `TravelersBackpackCompat.java`, `MCACompat.java`, or `PMmoCompat.java`
+1. Create a new compat class (e.g., `YourModCompat.java`) following the pattern in `TravelersBackpackCompat.java` or `PMmoCompat.java`
 2. Implement `isLoaded()`, `saveData()`, and `loadData()` methods
 3. Add integration calls in `BackpackSyncHandler.java`
 4. Use comprehensive error handling (Throwable catches) to prevent crashes
@@ -313,7 +286,6 @@ To add support for additional mods:
 
 - **PlayerSync** - [mlus-asuka](https://github.com/mlus-asuka)
 - **Traveler's Backpack** - [Tiviacz1337](https://github.com/Tiviacz1337)
-- **MCA Reborn** - [Luke100000](https://github.com/Luke100000/minecraft-comes-alive)
 - **Project MMO** - [Caltinor](https://www.curseforge.com/minecraft/mc-mods/project-mmo)
 
 ## License
@@ -339,13 +311,6 @@ If you encounter issues:
 - Initial release
 - Support for Minecraft 1.20.1
 - Traveler's Backpack: Full inventory, fluids, settings, and abilities sync
-- MCA Reborn: Comprehensive sync of all player data including:
-  - Marriage, family, and relationships
-  - Village rank, reputation, and monarch status
-  - Traits, mood, and genetics
-  - Destiny, quests, and interactions
-  - Baby/pregnancy state and gift history
-  - 30+ data keys automatically detected and synced
 - Project MMO: Complete skill progression sync including:
   - All skills, levels, and XP
   - Perks and abilities

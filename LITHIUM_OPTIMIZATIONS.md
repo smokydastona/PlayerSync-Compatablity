@@ -282,7 +282,6 @@ Potential additional Lithium techniques to explore:
 These optimizations are **fully compatible** with:
 - ✅ PlayerSync (all versions)
 - ✅ Traveler's Backpack
-- ✅ MCA Reborn
 - ✅ PMMO
 - ✅ All other mods
 

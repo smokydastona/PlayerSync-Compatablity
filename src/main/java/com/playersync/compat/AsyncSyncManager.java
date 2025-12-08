@@ -62,14 +62,6 @@ public class AsyncSyncManager {
                     }
                 }
                 
-                if (MCACompat.isLoaded()) {
-                    CompoundTag mcaData = MCACompat.saveMCAData(player);
-                    if (mcaData != null && !mcaData.isEmpty()) {
-                        SyncOptimizations.addToBatch(batch, "mca", mcaData, true);
-                        hasData = true;
-                    }
-                }
-                
                 if (PMmoCompat.isLoaded()) {
                     CompoundTag pmmoData = PMmoCompat.savePMmoData(player);
                     if (pmmoData != null && !pmmoData.isEmpty()) {
@@ -120,13 +112,6 @@ public class AsyncSyncManager {
                     if (backpackData != null && !backpackData.isEmpty()) {
                         TravelersBackpackCompat.loadBackpackData(player, backpackData);
                         TravelersBackpackCompat.markBackpackDirty(player);
-                    }
-                }
-                
-                if (MCACompat.isLoaded()) {
-                    CompoundTag mcaData = SyncOptimizations.getFromBatch(batch, "mca");
-                    if (mcaData != null && !mcaData.isEmpty()) {
-                        MCACompat.loadMCAData(player, mcaData);
                     }
                 }
                 

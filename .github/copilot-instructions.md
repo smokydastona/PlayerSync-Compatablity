@@ -41,7 +41,7 @@ This triggers GitHub Actions to compile the mod. The workspace must stay clean -
 Universal performance enhancement for PlayerSync that:
 - Works WITH or WITHOUT optional mod dependencies
 - Provides performance optimizations for ALL PlayerSync data
-- Optionally enhances sync for Traveler's Backpack, MCA Reborn, and PMMO
+- Optionally enhances sync for Traveler's Backpack and PMMO
 - Uses Lithium-inspired optimizations for massive performance gains
 
 ### Project Structure
@@ -54,8 +54,7 @@ src/main/java/com/playersync/compat/
 ├── AsyncSyncManager.java                    # Async processing framework
 ├── LithiumInspiredOptimizations.java        # Lithium-style optimizations
 ├── TravelersBackpackCompat.java             # Traveler's Backpack integration
-├── MCACompat.java                           # MCA Reborn integration
-└── PMmoCompat.java                          # Project MMO integration
+├── PMmoCompat.java                          # Project MMO integration
 ```
 
 ### Dependencies
@@ -67,7 +66,6 @@ src/main/java/com/playersync/compat/
 
 **Optional (mod works without these):**
 - Traveler's Backpack 9.1.15+ (optional mod compatibility)
-- MCA Reborn (optional mod compatibility)
 - Project MMO (optional mod compatibility)
 
 ### Key Features Implemented

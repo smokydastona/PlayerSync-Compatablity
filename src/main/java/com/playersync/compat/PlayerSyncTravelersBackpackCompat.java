@@ -41,9 +41,6 @@ public class PlayerSyncTravelersBackpackCompat {
         if (travelersBackpackLoaded) {
             LOGGER.info("Traveler's Backpack detected - activating compatibility");
         }
-        if (MCACompat.isLoaded()) {
-            LOGGER.info("MCA Reborn detected - activating compatibility");
-        }
         if (PMmoCompat.isLoaded()) {
             LOGGER.info("Project MMO detected - activating compatibility");
         }
@@ -69,7 +66,6 @@ public class PlayerSyncTravelersBackpackCompat {
         LOGGER.info("  ✓ Safety Features - Death tracking, sync completion");
         LOGGER.info("  ✓ Optional Mod Support:");
         if (travelersBackpackLoaded) LOGGER.info("    - Traveler's Backpack");
-        if (MCACompat.isLoaded()) LOGGER.info("    - MCA Reborn");
         if (PMmoCompat.isLoaded()) LOGGER.info("    - Project MMO");
     }
     

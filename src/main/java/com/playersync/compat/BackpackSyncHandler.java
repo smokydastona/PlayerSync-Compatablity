@@ -94,16 +94,6 @@ public class BackpackSyncHandler {
                     PlayerSyncTravelersBackpackCompat.LOGGER.debug("Added Traveler's Backpack data to batch for player: {}", player.getName().getString());
                 }
                 
-                // Collect MCA data if mod is loaded
-                if (MCACompat.isLoaded()) {
-                    CompoundTag mcaData = MCACompat.saveMCAData(player);
-                    if (mcaData != null && !mcaData.isEmpty()) {
-                        SyncOptimizations.addToBatch(batch, "mca", mcaData, true); // Compress MCA data
-                        hasData = true;
-                        PlayerSyncTravelersBackpackCompat.LOGGER.debug("Added MCA data to batch for player: {}", player.getName().getString());
-                    }
-                }
-                
                 // Collect PMMO data if mod is loaded
                 if (PMmoCompat.isLoaded()) {
                     CompoundTag pmmoData = PMmoCompat.savePMmoData(player);
@@ -182,15 +172,6 @@ public class BackpackSyncHandler {
                         PlayerSyncTravelersBackpackCompat.LOGGER.debug("Loaded Traveler's Backpack data from batch for player: {}", player.getName().getString());
                     }
                     
-                    // Extract and decompress MCA data if mod is loaded
-                    if (MCACompat.isLoaded()) {
-                        CompoundTag mcaData = SyncOptimizations.getFromBatch(batch, "mca");
-                        if (mcaData != null && !mcaData.isEmpty()) {
-                            MCACompat.loadMCAData(player, mcaData);
-                            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Loaded MCA data from batch for player: {}", player.getName().getString());
-                        }
-                    }
-                    
                     // Extract and decompress PMMO data if mod is loaded
                     if (PMmoCompat.isLoaded()) {
                         CompoundTag pmmoData = SyncOptimizations.getFromBatch(batch, "pmmo");
@@ -207,14 +188,6 @@ public class BackpackSyncHandler {
                             TravelersBackpackCompat.loadBackpackData(player, backpackData);
                             TravelersBackpackCompat.markBackpackDirty(player);
                             PlayerSyncTravelersBackpackCompat.LOGGER.debug("Loaded Traveler's Backpack data (legacy format) for player: {}", player.getName().getString());
-                        }
-                    }
-                    
-                    if (MCACompat.isLoaded() && persistentData.contains(MCACompat.CAPABILITY_KEY)) {
-                        CompoundTag mcaData = persistentData.getCompound(MCACompat.CAPABILITY_KEY);
-                        if (mcaData != null && !mcaData.isEmpty()) {
-                            MCACompat.loadMCAData(player, mcaData);
-                            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Loaded MCA data (legacy format) for player: {}", player.getName().getString());
                         }
                     }
                     
@@ -294,14 +267,6 @@ public class BackpackSyncHandler {
                         }
                     }
                     
-                    if (MCACompat.isLoaded() && oldPersistentData.contains(MCACompat.CAPABILITY_KEY)) {
-                        CompoundTag mcaData = oldPersistentData.getCompound(MCACompat.CAPABILITY_KEY);
-                        if (mcaData != null) {
-                            newPersistentData.put(MCACompat.CAPABILITY_KEY, mcaData.copy());
-                            PlayerSyncTravelersBackpackCompat.LOGGER.debug("Cloned MCA data (legacy format) for player: {}", newPlayer.getName().getString());
-                        }
-                    }
-                    
                     if (PMmoCompat.isLoaded() && oldPersistentData.contains(PMmoCompat.CAPABILITY_KEY)) {
                         CompoundTag pmmoData = oldPersistentData.getCompound(PMmoCompat.CAPABILITY_KEY);
                         if (pmmoData != null) {
@@ -355,7 +320,7 @@ public class BackpackSyncHandler {
      * Saves all mod data directly to player's persistent data
      */
     private static void performAutoSave(ServerPlayer player) {
-        if (!TravelersBackpackCompat.isLoaded() && !MCACompat.isLoaded() && !PMmoCompat.isLoaded()) {
+        if (!TravelersBackpackCompat.isLoaded() && !PMmoCompat.isLoaded()) {
             return; // Nothing to save
         }
         
@@ -369,15 +334,6 @@ public class BackpackSyncHandler {
                 CompoundTag backpackData = TravelersBackpackCompat.saveBackpackData(player);
                 if (backpackData != null && !backpackData.isEmpty()) {
                     SyncOptimizations.addToBatch(batch, "travelersbackpack", backpackData, true);
-                    hasData = true;
-                }
-            }
-            
-            // Collect MCA data
-            if (MCACompat.isLoaded()) {
-                CompoundTag mcaData = MCACompat.saveMCAData(player);
-                if (mcaData != null && !mcaData.isEmpty()) {
-                    SyncOptimizations.addToBatch(batch, "mca", mcaData, true);
                     hasData = true;
                 }
             }
